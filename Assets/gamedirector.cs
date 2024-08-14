@@ -47,6 +47,8 @@ public class gamedirector : MonoBehaviour
         SpriteRenderer sr = enemyObject.AddComponent<SpriteRenderer>();
         sr.sprite = enemy[r].image;//”z—ñenemy‚Ìr”Ô–Ú‚Ì—v‘f‚Ì‰æ‘œ
         enemyObject.transform.position = start_pos;
+        enemyObject.transform.localScale += Vector3.right * 1.05f;
+        enemyObject.transform.localScale += Vector3.up * 1.05f;
         can_ans = false;
         exit = false;
     }
@@ -54,8 +56,8 @@ public class gamedirector : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-        start_pos = new Vector2(10.0f, 2.0f);
-        target = new Vector2(0.0f, 2.0f);
+        start_pos = new Vector2(10.0f, 1.5f);
+        target = new Vector2(0.0f, 1.5f);
         Show_enemy();
     }
 

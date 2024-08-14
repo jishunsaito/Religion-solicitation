@@ -1130,6 +1130,7 @@ GameObject:
   - component: {fileID: 879553227}
   - component: {fileID: 879553226}
   - component: {fileID: 879553229}
+  - component: {fileID: 879553230}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -1212,6 +1213,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 879553230}
+        m_TargetAssemblyTypeName: Titlecontroller, Assembly-CSharp
+        m_MethodName: Startbuttondown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &879553227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1264,6 +1277,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   page: {fileID: 1571102206}
   hideButton: {fileID: 879553226}
+--- !u!114 &879553230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879553224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9f641b2310a4a4181db59fe2fd24ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &959141421
 GameObject:
   m_ObjectHideFlags: 0
@@ -2481,7 +2506,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: e109bb2e5118ee74088e59169abb8345, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b2ba8d455767699459e0284058ce3463, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3176,6 +3201,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1824268671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1824268673}
+  - component: {fileID: 1824268672}
+  m_Layer: 0
+  m_Name: FadeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1824268672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824268671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 760ca127e1294f448974f370f4f39602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebugMode: 0
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!4 &1824268673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824268671}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.025647, y: 4.793836, z: -0.10207066}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1824275180
 GameObject:
   m_ObjectHideFlags: 0
@@ -3281,7 +3352,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -7507694344472420663, guid: 659278f6302ea6649b86f76045784ad0, type: 2}
   m_audioClip: {fileID: 8300000, guid: 98f87b1bacbd2684f9cb3b7821a514b3, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.454
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -4524,3 +4595,4 @@ SceneRoots:
   - {fileID: 436312914}
   - {fileID: 550266387}
   - {fileID: 1571102209}
+  - {fileID: 1824268673}
