@@ -16,6 +16,7 @@ public class punchcontoroller : MonoBehaviour
     void OnZkeypressed()
     {
         GetComponent<Animator>().SetTrigger("punchAnim");
+        GetComponent<AudioSource>().Play();
     }
     void Update()
     {

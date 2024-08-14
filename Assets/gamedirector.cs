@@ -28,7 +28,7 @@ public class gamedirector : MonoBehaviour
     private Vector2 start_pos;//人の開始地点
     private Vector2 target;//人の停止地点
     private float speed;//出現スピード 1.8
-    private float back = -0.7f;//退場する速度
+    private float back = -1.5f;//退場する速度
     private float grad = 0.85f;//スピードの勾配 0.85
     private bool can_ans = false;//キーボードを押せるか
     private bool exit = false;
@@ -120,8 +120,7 @@ public class gamedirector : MonoBehaviour
         enemyObject.transform.localScale += Vector3.right*4;
         enemyObject.transform.localScale += Vector3.up * 4;
         enemyObject.transform.Translate(0,-6,0);
-        yield return new WaitForSeconds(0.5f);
-        SceneManager.LoadScene("ResultScene");
+        
     }
 
     void Update()
@@ -142,7 +141,7 @@ public class gamedirector : MonoBehaviour
         if (exit && !enemy[r].flag)
         {
             enemyObject.transform.Translate(back, 0, 0);
-            if (enemyObject.transform.position.x < -10.0f)
+            if (enemyObject.transform.position.x < -20.0f)
             {
                 Destroy(enemyObject);
                 Show_enemy();
@@ -151,9 +150,9 @@ public class gamedirector : MonoBehaviour
         }
         else if(exit && enemy[r].flag)
         {
-            enemyObject.transform.Translate(back, 0.4f, 0,Space.World);
+            enemyObject.transform.Translate(back, 0.7f, 0,Space.World);
             enemyObject.transform.Rotate(0, 0, 30);
-            if(enemyObject.transform.position.x < -10.0f)
+            if(enemyObject.transform.position.x < -20.0f)
             {
                 Destroy(enemyObject);
                 Show_enemy();
