@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class gamedirector : MonoBehaviour
 {
@@ -12,7 +13,16 @@ public class gamedirector : MonoBehaviour
         public Sprite image; // 画像
         public bool flag; //真理値
     }
-    public int n = 0;//倒した相手の数
+    [System.Serializable]
+    public class Level
+    {
+        public int level;
+        public float ans_time;
+        public float speed_up;
+        public float r_range;
+    }
+    public Level[] mode;
+    public static int n = 999;//倒した相手の数
     public Enemy[] enemy;//Enemy型の配列
     private GameObject enemyObject;//出現する人
     private Vector2 start_pos;//人の開始地点
@@ -22,6 +32,10 @@ public class gamedirector : MonoBehaviour
     private float grad = 0.85f;//スピードの勾配 0.85
     private bool can_ans = false;//キーボードを押せるか
     private bool exit = false;
+    private bool answering = false;
+    public  bool onAnim = false;
+
+
     int r;//出現する人を決める乱数値;
 
     //敵の出現
@@ -42,21 +56,41 @@ public class gamedirector : MonoBehaviour
         Application.targetFrameRate = 60;
         start_pos = new Vector2(10.0f, 2.0f);
         target = new Vector2(0.0f, 2.0f);
-        
-        
         Show_enemy();
     }
 
     IEnumerator OnZkeypressed()
     {
+        answering = true;
         yield return new WaitForSeconds(0.25f);
+        StartCoroutine(Shake(0.1f,0.2f));
+        yield return new WaitForSeconds(0.1f);
         Check(true);
+        answering = false;
+        
     }
 
     IEnumerator OnXkeypressed()
     {
+        answering = true;
         yield return new WaitForSeconds(0.2f);
         Check(false);
+        answering = false;
+
+    }
+    IEnumerator Shake(float span,float degree)
+    {
+        Vector2 n_pos = enemyObject.transform.position;
+        float delta = 0f;
+        while(delta < span)
+        {
+            float shake_x = Random.Range(-degree, degree);
+            float shake_y = Random.Range(-degree, degree);
+            enemyObject.transform.position = new Vector2(n_pos.x+shake_x,n_pos.y+shake_y);
+            delta += Time.deltaTime;
+            yield return null;
+        }
+        enemyObject.transform.position = n_pos;
     }
 
     void Check(bool ans)
@@ -70,9 +104,24 @@ public class gamedirector : MonoBehaviour
         else
         {
             Debug.Log("不正解");
+            StartCoroutine(Loose());
+            
+
         }
+        can_ans = false;
+        
 
         
+    }
+    IEnumerator Loose()
+    {
+        //不正解の時の敵の行動0.5秒後にプレイヤーに近づく
+        yield return new WaitForSeconds(0.5f);
+        enemyObject.transform.localScale += Vector3.right*4;
+        enemyObject.transform.localScale += Vector3.up * 4;
+        enemyObject.transform.Translate(0,-6,0);
+        yield return new WaitForSeconds(0.5f);
+        SceneManager.LoadScene("ResultScene");
     }
 
     void Update()
@@ -81,6 +130,7 @@ public class gamedirector : MonoBehaviour
         //Objectがあるときに移動
         if (enemyObject != null)
         {
+            
             speed *= grad;
             enemyObject.transform.position = Vector2.MoveTowards(
                 enemyObject.transform.position,
@@ -111,22 +161,23 @@ public class gamedirector : MonoBehaviour
             
 
         }
- 
+        
         //キー操作
-        if ((Vector2)enemyObject.transform.position == target)
+        if (enemyObject.transform.position.x < 1.5f && enemyObject.transform.position.x >= 0.0f)
         {
             can_ans = true;//敵の停止を確認
         }
-        if (can_ans)
+        if (can_ans && !answering)
         {
             if (Input.GetKeyDown(KeyCode.Z))
-            {
+            { 
                 StartCoroutine(OnZkeypressed());
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
                 StartCoroutine(OnXkeypressed());
             }
+
         }
     }
 }
