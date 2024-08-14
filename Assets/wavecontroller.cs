@@ -14,6 +14,7 @@ public class wavecontroller : MonoBehaviour
     void OnXkeypressed()
     {
         GetComponent<Animator>().SetTrigger("handAnim");
+        GetComponent<AudioSource>().Play();
     }
     void Update()
     {
