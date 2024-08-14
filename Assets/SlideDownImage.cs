@@ -10,7 +10,7 @@ public class SlideDownImage : MonoBehaviour
     public float initialSpeed = 200f; // 初速度
     public float acceleration = 50f; // 加速度
     public float stopPositionY = 800f; // 移動を止めるY座標
-    public float decelerationDistance = 100f; // 減速を開始する距離
+    public float decelerationDistance = 300f; // 減速を開始する距離
 
     private float currentSpeed;
     private bool isDecelerating = false;
@@ -28,7 +28,7 @@ public class SlideDownImage : MonoBehaviour
     private void Update()
     {
         // 現在の位置を取得
-        Vector3 position = uiImage.anchoredPosition;
+        Vector2 position = uiImage.anchoredPosition;
 
         // 所定の位置までの距離を計算
         float distanceToStop = stopPositionY - position.y;
