@@ -2,26 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class punchcontoroller : MonoBehaviour
+public class wavecontroller : MonoBehaviour
 {
     private Animator animetor;
-    
-    // Start is called before the first frame update
+
     void Start()
     {
         animetor = this.gameObject.GetComponent<Animator>();
-
     }
 
-    void OnZkeypressed()
+    void OnXkeypressed()
     {
-        GetComponent<Animator>().SetTrigger("punchAnim");
+        GetComponent<Animator>().SetTrigger("handAnim");
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            OnZkeypressed();
+            OnXkeypressed();
         }
     }
 }
