@@ -11,16 +11,16 @@ public class wavecontroller : MonoBehaviour
         animetor = this.gameObject.GetComponent<Animator>();
     }
 
-    void OnXkeypressed()
+    void OnZkeypressed()
     {
         GetComponent<Animator>().SetTrigger("handAnim");
         GetComponent<AudioSource>().Play();
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            OnXkeypressed();
+            OnZkeypressed();
         }
     }
 }
