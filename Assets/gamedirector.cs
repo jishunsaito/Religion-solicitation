@@ -1,9 +1,12 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+
 
 public class gamedirector : MonoBehaviour
 {
@@ -30,10 +33,18 @@ public class gamedirector : MonoBehaviour
     private float speed;//出現スピード 1.8
     private float back = -1.5f;//退場する速度
     private float grad = 0.85f;//スピードの勾配 0.85
+    private float countdown;//制限時間
     private bool can_ans = false;//キーボードを押せるか
-    private bool exit = false;
-    private bool answering = false;
-    public  bool onAnim = false;
+    private bool exit = false;//退場中
+    private bool answering = false;//回答中
+    private bool timeup = false;//時間切れ
+    private AudioSource audiosource;
+    private Animator punching;
+    private Animator waving;
+    public AudioClip punch_SE;
+    public AudioClip waving_SE;
+
+
 
 
     int r;//出現する人を決める乱数値;
@@ -51,6 +62,7 @@ public class gamedirector : MonoBehaviour
         enemyObject.transform.localScale += Vector3.up * 1.05f;
         can_ans = false;
         exit = false;
+        countdown = 2.0f;
     }
 
     void Start()
@@ -58,26 +70,33 @@ public class gamedirector : MonoBehaviour
         Application.targetFrameRate = 60;
         start_pos = new Vector2(10.0f, 1.5f);
         target = new Vector2(0.0f, 1.5f);
+        punching = GameObject.Find("punching1").GetComponent<Animator>();
+        waving = GameObject.Find("hand1").GetComponent<Animator>();
+        audiosource = gameObject.GetComponent<AudioSource>();
         Show_enemy();
-    }
-
-    IEnumerator OnZkeypressed()
-    {
-        answering = true;
-        yield return new WaitForSeconds(0.25f);
-        StartCoroutine(Shake(0.1f,0.2f));
-        yield return new WaitForSeconds(0.1f);
-        Check(true);
-        answering = false;
-        
     }
 
     IEnumerator OnXkeypressed()
     {
         answering = true;
+        punching.SetTrigger("punchAnim");
+        PlaySE(punch_SE);
+        yield return new WaitForSeconds(0.25f);
+        StartCoroutine(Shake(0.1f,0.2f));
+        yield return new WaitForSeconds(0.1f);
+        Check(true);
+    
+        
+    }
+
+    IEnumerator OnZkeypressed()
+    {
+        PlaySE(waving_SE);
+        waving.SetTrigger("handAnim");
+        answering = true;
         yield return new WaitForSeconds(0.2f);
         Check(false);
-        answering = false;
+        
 
     }
     IEnumerator Shake(float span,float degree)
@@ -95,6 +114,13 @@ public class gamedirector : MonoBehaviour
         enemyObject.transform.position = n_pos;
     }
 
+    void PlaySE(AudioClip clip)
+    {
+        audiosource.clip = clip;
+        audiosource.Play();
+    }
+
+
     void Check(bool ans)
     {
         if (ans == enemy[r].flag)
@@ -102,13 +128,13 @@ public class gamedirector : MonoBehaviour
             Debug.Log("正解");
             n++;
             exit = true;
+            
         }
         else
         {
             Debug.Log("不正解");
             StartCoroutine(Loose());
-            
-
+            timeup = true;
         }
         can_ans = false;
         
@@ -118,11 +144,14 @@ public class gamedirector : MonoBehaviour
     IEnumerator Loose()
     {
         //不正解の時の敵の行動0.5秒後にプレイヤーに近づく
-        yield return new WaitForSeconds(0.5f);
+        answering = true;
+        yield return new WaitForSeconds(1.0f);
         enemyObject.transform.localScale += Vector3.right*4;
         enemyObject.transform.localScale += Vector3.up * 4;
-        enemyObject.transform.Translate(0,-6,0);
-        
+        enemyObject.transform.Translate(0,-15,0);
+        yield return new WaitForSeconds(0.6f);
+        SceneManager.LoadScene("ResultScene");
+
     }
 
     void Update()
@@ -145,28 +174,38 @@ public class gamedirector : MonoBehaviour
             enemyObject.transform.Translate(back, 0, 0);
             if (enemyObject.transform.position.x < -20.0f)
             {
+                answering = false;
                 Destroy(enemyObject);
                 Show_enemy();
             }
 
         }
+
         else if(exit && enemy[r].flag)
         {
             enemyObject.transform.Translate(back, 0.7f, 0,Space.World);
             enemyObject.transform.Rotate(0, 0, 30);
             if(enemyObject.transform.position.x < -20.0f)
             {
+                answering = false;
                 Destroy(enemyObject);
                 Show_enemy();
             }
-            
-
         }
-        
+
+
         //キー操作
         if (enemyObject.transform.position.x < 1.5f && enemyObject.transform.position.x >= 0.0f)
         {
             can_ans = true;//敵の停止を確認
+            countdown -= Time.deltaTime;
+            if (countdown < 0 && !timeup)
+            {
+                Debug.Log("時間切れ");
+                timeup = true;
+                StartCoroutine(Loose());
+            }
+            
         }
         if (can_ans && !answering)
         {
