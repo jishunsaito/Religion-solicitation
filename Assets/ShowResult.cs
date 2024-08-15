@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +20,7 @@ public class GameResult : MonoBehaviour
         {
             if (i <= result)
             {
-                InvokeRepeating(nameof(RepeatMsg), 0.2f, 0.1f);
+                InvokeRepeating(nameof(RepeatMsg), 0.5f, 0.1f);
   
             }
 
@@ -32,7 +31,7 @@ public class GameResult : MonoBehaviour
             
         }
 
-        void RepeatMsg()
+   void RepeatMsg()
         {
         if (i <= result)
         {
