@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 342718269}
   - component: {fileID: 342718268}
   - component: {fileID: 342718270}
+  - component: {fileID: 342718271}
   m_Layer: 0
   m_Name: mainsystem
   m_TagString: Untagged
@@ -244,12 +245,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf49b7a58217204391ba1394243088e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: []
+  mode:
+  - level: 1
+    ans_time: 2
+    speed_up: 1
+    r_range: 4
+  - level: 2
+    ans_time: 1.5
+    speed_up: 1.3
+    r_range: 8
+  - level: 3
+    ans_time: 1
+    speed_up: 1.5
+    r_range: 12
+  - level: 4
+    ans_time: 0.5
+    speed_up: 1.8
+    r_range: 16
   enemy:
-  - image: {fileID: 21300000, guid: 25e4630ab712148489bd3cd68414d1bd, type: 3}
+  - image: {fileID: 21300000, guid: d478b759c345f7740ad741584fc9acd4, type: 3}
     flag: 0
-  - image: {fileID: 21300000, guid: f97b87b6b2270354e8b7a0789e742fb8, type: 3}
+  - image: {fileID: 21300000, guid: d38f14a935b2ac34991fb23363278c34, type: 3}
     flag: 1
+  - image: {fileID: 21300000, guid: bb6636533311937449dfc0350b1cf1a8, type: 3}
+    flag: 0
+  - image: {fileID: 21300000, guid: eb4b4f27ee3a5ce45b708433a28a2c46, type: 3}
+    flag: 1
+  - image: {fileID: 21300000, guid: 71cca763e6635d647b9ce6d7d199a6ce, type: 3}
+    flag: 1
+  - image: {fileID: 21300000, guid: c8bc3c722a514c446b517bc2926d1e39, type: 3}
+    flag: 1
+  - image: {fileID: 21300000, guid: 53f3df93b55f8d64b8218aee746b78dd, type: 3}
+    flag: 0
+  - image: {fileID: 21300000, guid: f32773f45248ae04f852247f4658c77b, type: 3}
+    flag: 0
   punch_SE: {fileID: 8300000, guid: 32cd15bde0cf9414c9712d04612d017a, type: 3}
   waving_SE: {fileID: 8300000, guid: a559cced4fb065440a61c23421c6b1f4, type: 3}
 --- !u!4 &342718269
@@ -279,8 +308,104 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1.7
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &342718271
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342718267}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: ebb356c1b23f9fd46b8db022014c5b02, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.05
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0

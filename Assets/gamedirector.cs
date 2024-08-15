@@ -52,7 +52,7 @@ public class gamedirector : MonoBehaviour
     //敵の出現
     void Show_enemy()
     {
-        r = Random.Range(0, 2);//0または1
+        r = Random.Range(0, 8);//0または1
         speed = 1.8f;
         enemyObject = new GameObject("Enemy");
         SpriteRenderer sr = enemyObject.AddComponent<SpriteRenderer>();
@@ -195,7 +195,7 @@ public class gamedirector : MonoBehaviour
 
 
         //キー操作
-        if (enemyObject.transform.position.x < 1.5f && enemyObject.transform.position.x >= 0.0f)
+        if (enemyObject.transform.position.x < 1.0f && enemyObject.transform.position.x >= 0.0f)
         {
             can_ans = true;//敵の停止を確認
             countdown -= Time.deltaTime;
