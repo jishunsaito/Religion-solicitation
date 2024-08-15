@@ -11,7 +11,7 @@ public class FadeController : MonoBehaviour
     void Start()
     {
         a.alpha = 0.0f;//•Ï”a‚Ìalpha’l‚ğ•ÏX
-        InvokeRepeating(nameof(FadeIn), 0.5f, 0.0f);
+        InvokeRepeating(nameof(FadeIn), 0.5f, 0.1f);
     }
 
     void FadeIn()

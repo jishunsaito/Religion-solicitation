@@ -499,7 +499,6 @@ GameObject:
   - component: {fileID: 343938268}
   - component: {fileID: 343938267}
   - component: {fileID: 343938269}
-  - component: {fileID: 343938270}
   - component: {fileID: 343938271}
   m_Layer: 0
   m_Name: hand1
@@ -596,18 +595,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &343938270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 343938266}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ba522802b2cb3546badf2c63887b810, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &343938271
 AudioSource:
   m_ObjectHideFlags: 0
@@ -799,7 +786,6 @@ GameObject:
   - component: {fileID: 1051284289}
   - component: {fileID: 1051284288}
   - component: {fileID: 1051284287}
-  - component: {fileID: 1051284290}
   - component: {fileID: 1051284291}
   m_Layer: 0
   m_Name: punching1
@@ -896,18 +882,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1051284290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1051284286}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c86a4b6a21b00c45a374ba5ac90db1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &1051284291
 AudioSource:
   m_ObjectHideFlags: 0
