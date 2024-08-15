@@ -19,13 +19,13 @@ public class gamedirector : MonoBehaviour
     [System.Serializable]
     public class Level
     {
-        public int level;
         public float ans_time;
         public float speed_up;
-        public float r_range;
+        public int r_range;
     }
     public Level[] mode;
-    public static int n = 999;//倒した相手の数
+    private int level_idx = 0;
+    public static int n = 0;//倒した相手の数
     public Enemy[] enemy;//Enemy型の配列
     private GameObject enemyObject;//出現する人
     private Vector2 start_pos;//人の開始地点
@@ -38,11 +38,13 @@ public class gamedirector : MonoBehaviour
     private bool exit = false;//退場中
     private bool answering = false;//回答中
     private bool timeup = false;//時間切れ
-    private AudioSource audiosource;
+    private AudioSource SEaudiosource;
+    private AudioSource BGMaudiosource;
     private Animator punching;
     private Animator waving;
     public AudioClip punch_SE;
     public AudioClip waving_SE;
+    public AudioClip BGM;
 
 
 
@@ -52,8 +54,15 @@ public class gamedirector : MonoBehaviour
     //敵の出現
     void Show_enemy()
     {
-        r = Random.Range(0, 8);//0または1
-        speed = 1.8f;
+        Debug.Log(level_idx);
+        if(n%10 == 0 && n <= 40 && n!= 0)
+        {
+            level_idx++;
+            SEaudiosource.pitch = mode[level_idx].speed_up;
+            BGMaudiosource.pitch = mode[level_idx].speed_up;
+        }
+        r = Random.Range(0, mode[level_idx].r_range);//0または1
+        speed = 1.8f* mode[level_idx].speed_up;
         enemyObject = new GameObject("Enemy");
         SpriteRenderer sr = enemyObject.AddComponent<SpriteRenderer>();
         sr.sprite = enemy[r].image;//配列enemyのr番目の要素の画像
@@ -62,7 +71,8 @@ public class gamedirector : MonoBehaviour
         enemyObject.transform.localScale += Vector3.up * 1.05f;
         can_ans = false;
         exit = false;
-        countdown = 2.0f;
+        countdown = mode[level_idx].ans_time;
+        
     }
 
     void Start()
@@ -72,7 +82,17 @@ public class gamedirector : MonoBehaviour
         target = new Vector2(0.0f, 1.5f);
         punching = GameObject.Find("punching1").GetComponent<Animator>();
         waving = GameObject.Find("hand1").GetComponent<Animator>();
-        audiosource = gameObject.GetComponent<AudioSource>();
+
+        SEaudiosource = gameObject.AddComponent<AudioSource>();
+        SEaudiosource.volume = 0.05f;
+
+        BGMaudiosource = gameObject.AddComponent<AudioSource>();
+        BGMaudiosource.clip = BGM;
+        BGMaudiosource.loop = true;
+        BGMaudiosource.volume = 0.05f;
+        BGMaudiosource.pitch = mode[0].speed_up;
+        SEaudiosource.pitch = mode[0].speed_up;
+        BGMaudiosource.Play();
         Show_enemy();
     }
 
@@ -81,9 +101,9 @@ public class gamedirector : MonoBehaviour
         answering = true;
         punching.SetTrigger("punchAnim");
         PlaySE(punch_SE);
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.25f/ mode[level_idx].speed_up);
         StartCoroutine(Shake(0.1f,0.2f));
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.1f/ mode[level_idx].speed_up);
         Check(true);
     
         
@@ -94,7 +114,7 @@ public class gamedirector : MonoBehaviour
         PlaySE(waving_SE);
         waving.SetTrigger("handAnim");
         answering = true;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.2f / mode[level_idx].speed_up);
         Check(false);
         
 
@@ -116,8 +136,9 @@ public class gamedirector : MonoBehaviour
 
     void PlaySE(AudioClip clip)
     {
-        audiosource.clip = clip;
-        audiosource.Play();
+        SEaudiosource.clip = clip;
+        SEaudiosource.loop = false;
+        SEaudiosource.Play();
     }
 
 
@@ -125,14 +146,13 @@ public class gamedirector : MonoBehaviour
     {
         if (ans == enemy[r].flag)
         {
-            Debug.Log("正解");
             n++;
+            Debug.Log(n);
             exit = true;
             
         }
         else
         {
-            Debug.Log("不正解");
             StartCoroutine(Loose());
             timeup = true;
         }
@@ -156,6 +176,7 @@ public class gamedirector : MonoBehaviour
 
     void Update()
     {
+       
 
         //Objectがあるときに移動
         if (enemyObject != null)
