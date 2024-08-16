@@ -43,7 +43,9 @@ public class gamedirector : MonoBehaviour
     private Animator punching;
     private Animator waving;
     public AudioClip punch_SE;
+    public AudioClip bigpunch_SE;
     public AudioClip waving_SE;
+    public AudioClip surprised_SE;
     public AudioClip BGM;
 
 
@@ -55,11 +57,12 @@ public class gamedirector : MonoBehaviour
     void Show_enemy()
     {
         Debug.Log(level_idx);
-        if(n%10 == 0 && n <= 40 && n!= 0)
+        if(n%10 == 0 && n <= 30 && n!= 0)
         {
             level_idx++;
-            SEaudiosource.pitch = mode[level_idx].speed_up;
+            SEaudiosource.pitch = mode[level_idx].speed_up*1.6f;
             BGMaudiosource.pitch = mode[level_idx].speed_up;
+            punching.speed = mode[level_idx].speed_up;
         }
         r = Random.Range(0, mode[level_idx].r_range);//0または1
         speed = 1.8f* mode[level_idx].speed_up;
@@ -84,14 +87,14 @@ public class gamedirector : MonoBehaviour
         waving = GameObject.Find("hand1").GetComponent<Animator>();
 
         SEaudiosource = gameObject.AddComponent<AudioSource>();
-        SEaudiosource.volume = 0.05f;
+        SEaudiosource.volume = 0.1f;
 
         BGMaudiosource = gameObject.AddComponent<AudioSource>();
         BGMaudiosource.clip = BGM;
         BGMaudiosource.loop = true;
         BGMaudiosource.volume = 0.05f;
         BGMaudiosource.pitch = mode[0].speed_up;
-        SEaudiosource.pitch = mode[0].speed_up;
+        SEaudiosource.pitch = mode[0].speed_up*1.5f;
         BGMaudiosource.Play();
         Show_enemy();
     }
@@ -100,7 +103,14 @@ public class gamedirector : MonoBehaviour
     {
         answering = true;
         punching.SetTrigger("punchAnim");
-        PlaySE(punch_SE);
+        if (enemy[r].flag)
+        {
+            PlaySE(punch_SE);
+        }
+        else
+        {
+            PlaySE(bigpunch_SE);
+        }
         yield return new WaitForSeconds(0.25f/ mode[level_idx].speed_up);
         StartCoroutine(Shake(0.1f,0.2f));
         yield return new WaitForSeconds(0.1f/ mode[level_idx].speed_up);
@@ -165,11 +175,15 @@ public class gamedirector : MonoBehaviour
     {
         //不正解の時の敵の行動0.5秒後にプレイヤーに近づく
         answering = true;
-        yield return new WaitForSeconds(1.0f);
+        BGMaudiosource.Stop();
+        yield return new WaitForSeconds(2.0f);
         enemyObject.transform.localScale += Vector3.right*4;
         enemyObject.transform.localScale += Vector3.up * 4;
         enemyObject.transform.Translate(0,-15,0);
-        yield return new WaitForSeconds(0.6f);
+        SEaudiosource.pitch = 1.0f;
+        SEaudiosource.volume = 1.0f;
+        PlaySE(surprised_SE);
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene("ResultScene");
 
     }
