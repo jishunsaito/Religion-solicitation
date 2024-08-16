@@ -18,6 +18,6 @@ public class UIdirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scoreText.text = gamedirector.n.ToString() + "‚ª‚¦‚µ";
+        scoreText.text = gamedirector.n.ToString() + "l‚ª‚¦‚µ";
     }
 }

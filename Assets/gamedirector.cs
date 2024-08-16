@@ -24,7 +24,7 @@ public class gamedirector : MonoBehaviour
         public int r_range;
     }
     public Level[] mode;
-    private int level_idx = 0;
+    public int level_idx = 0;
     public static int n = 0;//ì|ÇµÇΩëäéËÇÃêî
     public Enemy[] enemy;//Enemyå^ÇÃîzóÒ
     private GameObject enemyObject;//èoåªÇ∑ÇÈêl
@@ -47,6 +47,7 @@ public class gamedirector : MonoBehaviour
     public AudioClip waving_SE;
     public AudioClip surprised_SE;
     public AudioClip BGM;
+    private ShowImageTimer showImageTimer;
 
 
 
@@ -63,6 +64,9 @@ public class gamedirector : MonoBehaviour
             SEaudiosource.pitch = mode[level_idx].speed_up*1.6f;
             BGMaudiosource.pitch = mode[level_idx].speed_up;
             punching.speed = mode[level_idx].speed_up;
+
+            showImageTimer.m_gameTimer.SetMaxTime(mode[level_idx].ans_time);
+
         }
         r = Random.Range(0, mode[level_idx].r_range);//0Ç‹ÇΩÇÕ1
         speed = 1.8f* mode[level_idx].speed_up;
@@ -74,6 +78,8 @@ public class gamedirector : MonoBehaviour
         enemyObject.transform.localScale += Vector3.up * 1.05f;
         can_ans = false;
         exit = false;
+        showImageTimer.m_gameTimer.OnReset();
+        showImageTimer.m_gameTimer.OnStart();
         countdown = mode[level_idx].ans_time;
         
     }
@@ -88,6 +94,9 @@ public class gamedirector : MonoBehaviour
 
         SEaudiosource = gameObject.AddComponent<AudioSource>();
         SEaudiosource.volume = 0.1f;
+
+        showImageTimer = FindObjectOfType<ShowImageTimer>();
+        showImageTimer.m_gameTimer.SetMaxTime(mode[level_idx].ans_time);
 
         BGMaudiosource = gameObject.AddComponent<AudioSource>();
         BGMaudiosource.clip = BGM;
@@ -157,7 +166,7 @@ public class gamedirector : MonoBehaviour
         if (ans == enemy[r].flag)
         {
             n++;
-            Debug.Log(n);
+
             exit = true;
             
         }
@@ -236,6 +245,7 @@ public class gamedirector : MonoBehaviour
             countdown -= Time.deltaTime;
             if (countdown < 0 && !timeup)
             {
+                showImageTimer.m_gameTimer.OnStop();
                 Debug.Log("éûä‘êÿÇÍ");
                 timeup = true;
                 StartCoroutine(Loose());
