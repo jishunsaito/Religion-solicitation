@@ -9,9 +9,7 @@ using UnityEngine.UI;
 public class GameResult : MonoBehaviour
 {
     TextMeshProUGUI Score;
-
-    //int result = gamedirector.n; //ƒXƒRƒA•Ï”‘Ò‚¿
-    int result = 18;
+    int result = gamedirector.n; 
     int i = 0;
     
   private void Start()
