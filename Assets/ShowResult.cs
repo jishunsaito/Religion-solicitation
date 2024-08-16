@@ -13,7 +13,6 @@ public class GameResult : MonoBehaviour
     [SerializeField] private CanvasGroup taiho;
     [SerializeField] AudioSource countup;
     [SerializeField] AudioSource finish;
-    [SerializeField] UnityEngine.UI.Text text;
     TextMeshProUGUI Score;
     int result = gamedirector.n;
     private int i = 0;
@@ -53,8 +52,8 @@ public class GameResult : MonoBehaviour
         else
         {
             CancelInvoke();
-            button.alpha += 1f;
-            InvokeRepeating(nameof(Taiho), 0.1f, 0.1f);
+            
+            InvokeRepeating(nameof(Taiho), 1f, 0.1f);
         }
     }
 
@@ -62,7 +61,22 @@ public class GameResult : MonoBehaviour
     {
         if (taiho.alpha < 1)
         {
-            taiho.alpha += 0.1f;
+            taiho.alpha += 0.2f; 
+            
+        }
+
+        else
+        {
+            finish.Play();
+            CancelInvoke();
+            InvokeRepeating(nameof(Button), 1f, 0.1f);
+        }
+    }
+    private void Button()
+    {
+        if (button.alpha < 1)
+        {
+            button.alpha += 1;
         }
 
         else

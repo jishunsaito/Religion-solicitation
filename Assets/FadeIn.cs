@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;//UIを使うとき追加
 
+
 public class FadeIn : MonoBehaviour
 {
     [SerializeField] private CanvasGroup panel;//CanvasGroupのpanel変数
@@ -11,17 +12,18 @@ public class FadeIn : MonoBehaviour
     [SerializeField] private CanvasGroup showresult;//CanvasGroupのshowresult変数
     [SerializeField] AudioSource seAudioSource;//音再生用の変数
 
-   
     void Start()
     {
         panel.alpha = 0.0f;//変数panelのalpha値を変更
         result.alpha = 0.0f;//変数resultのalpha値を変更
         showresult.alpha = 0.0f;//変数showresultのalpha値を変更
-        
+
 
         InvokeRepeating(nameof(Panel), 1.5f, 0.1f);
         InvokeRepeating(nameof(Result), 3.0f, 0.1f);
         InvokeRepeating(nameof(Showresult), 4f, 0.1f);
+
+
     }
 
     void Panel()//Panelのフェードイン
@@ -51,7 +53,7 @@ public class FadeIn : MonoBehaviour
         }
     }
 
-     void Showresult()//スコアの表示
+    void Showresult()//スコアの表示
     {
         if (showresult.alpha < 1)
         {
@@ -59,6 +61,8 @@ public class FadeIn : MonoBehaviour
             seAudioSource.Play();
         }
     }
-
 }
-    
+
+
+
+
