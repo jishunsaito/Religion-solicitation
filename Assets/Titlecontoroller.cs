@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Titlecontroller : MonoBehaviour
 {
+
     private Animator animetor;
+
     void Start()
     {
         animetor = GameObject.Find("Title").GetComponent<Animator>();

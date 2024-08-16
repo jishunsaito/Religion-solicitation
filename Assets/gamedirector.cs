@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 
@@ -39,6 +40,12 @@ public class gamedirector : MonoBehaviour
     private bool exit = false;//退場中
     private bool answering = false;//回答中
     private bool timeup = false;//時間切れ
+
+    // AudioMixerGroupを設定するためのフィールド
+    public AudioMixer audioMixer; // AudioMixerをドラッグ＆ドロップで設定します
+    public AudioMixerGroup SEAudioMixerGroup; // SE用のAudioMixerGroup
+    public AudioMixerGroup BGMAudioMixerGroup; // BGM用のAudioMixerGroup
+
     private AudioSource SEaudiosource;
     private AudioSource BGMaudiosource;
     private Animator punching;
@@ -50,9 +57,16 @@ public class gamedirector : MonoBehaviour
     public AudioClip BGM;
     private ShowImageTimer showImageTimer;
 
-
-
-
+    // 音量設定用の変数
+    [Range(0f, 1f)]
+    public float punchSEVolume = 0.1f; // PunchSEの音量
+    [Range(0f, 1f)]
+    public float wavingSEVolume = 0.1f; // WavingSEの音量
+    [Range(0f, 1f)]
+    public float bigpunchSEVolume = 0.1f; // BigPunchSEの音量
+    [Range(0f, 1f)]
+    public float surprisedSEVolume = 1f; // surprisedSEの音量
+    
     int r;//出現する人を決める乱数値;
 
     //敵の出現
@@ -95,7 +109,8 @@ public class gamedirector : MonoBehaviour
         waving = GameObject.Find("hand1").GetComponent<Animator>();
 
         SEaudiosource = gameObject.AddComponent<AudioSource>();
-        SEaudiosource.volume = 0.1f;
+        SEaudiosource.outputAudioMixerGroup = SEAudioMixerGroup; // AudioMixerGroupを設定
+        SEaudiosource.volume = punchSEVolume; // デフォルト音量を設定
 
         showImageTimer = FindObjectOfType<ShowImageTimer>();
         showImageTimer.m_gameTimer.SetMaxTime(mode[level_idx].ans_time);
@@ -104,6 +119,7 @@ public class gamedirector : MonoBehaviour
         BGMaudiosource.clip = BGM;
         BGMaudiosource.loop = true;
         BGMaudiosource.volume = 0.05f;
+        BGMaudiosource.outputAudioMixerGroup = BGMAudioMixerGroup; // AudioMixerGroupを設定
         BGMaudiosource.pitch = mode[0].speed_up;
         SEaudiosource.pitch = mode[0].speed_up*1.5f;
         BGMaudiosource.Play();
@@ -116,11 +132,11 @@ public class gamedirector : MonoBehaviour
         punching.SetTrigger("punchAnim");
         if (enemy[r].flag)
         {
-            PlaySE(punch_SE);
+            PlaySE(punch_SE,punchSEVolume);
         }
         else
         {
-            PlaySE(bigpunch_SE);
+            PlaySE(bigpunch_SE, bigpunchSEVolume);
         }
         yield return new WaitForSeconds(0.25f/ mode[level_idx].speed_up);
         StartCoroutine(Shake(0.1f,0.2f));
@@ -132,7 +148,7 @@ public class gamedirector : MonoBehaviour
 
     IEnumerator OnZkeypressed()
     {
-        PlaySE(waving_SE);
+        PlaySE(waving_SE, wavingSEVolume);
         waving.SetTrigger("handAnim");
         answering = true;
         yield return new WaitForSeconds(0.2f / mode[level_idx].speed_up);
@@ -155,9 +171,10 @@ public class gamedirector : MonoBehaviour
         enemyObject.transform.position = n_pos;
     }
 
-    void PlaySE(AudioClip clip)
+    void PlaySE(AudioClip clip, float volume)
     {
         SEaudiosource.clip = clip;
+        SEaudiosource.volume = volume; // 音量を設定
         SEaudiosource.loop = false;
         SEaudiosource.Play();
     }
@@ -193,7 +210,7 @@ public class gamedirector : MonoBehaviour
         enemyObject.transform.Translate(0,-15,0);
         SEaudiosource.pitch = 1.0f;
         SEaudiosource.volume = 1.0f;
-        PlaySE(surprised_SE);
+        PlaySE(surprised_SE, surprisedSEVolume);
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene("ResultScene");
 
