@@ -21,7 +21,8 @@ public class gamedirector : MonoBehaviour
     {
         public float ans_time;
         public float speed_up;
-        public int r_range;
+        public int r_range_max;
+        public int r_range_min;
     }
     public Level[] mode;
     public int level_idx = 0;
@@ -58,7 +59,7 @@ public class gamedirector : MonoBehaviour
     void Show_enemy()
     {
         Debug.Log(level_idx);
-        if(n%10 == 0 && n <= 30 && n!= 0)
+        if(n%15 == 0 && n <= 45 && n!= 0)
         {
             level_idx++;
             SEaudiosource.pitch = mode[level_idx].speed_up*1.6f;
@@ -68,7 +69,7 @@ public class gamedirector : MonoBehaviour
             showImageTimer.m_gameTimer.SetMaxTime(mode[level_idx].ans_time);
 
         }
-        r = Random.Range(0, mode[level_idx].r_range);//0‚Ü‚½‚Í1
+        r = Random.Range(mode[level_idx].r_range_min, mode[level_idx].r_range_max);//0‚Ü‚½‚Í1
         speed = 1.8f* mode[level_idx].speed_up;
         enemyObject = new GameObject("Enemy");
         SpriteRenderer sr = enemyObject.AddComponent<SpriteRenderer>();
@@ -87,6 +88,7 @@ public class gamedirector : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
+        n = 0;
         start_pos = new Vector2(10.0f, 1.5f);
         target = new Vector2(0.0f, 1.5f);
         punching = GameObject.Find("punching1").GetComponent<Animator>();
