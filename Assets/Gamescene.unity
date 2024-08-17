@@ -577,9 +577,9 @@ MonoBehaviour:
   surprised_SE: {fileID: 8300000, guid: 00de785978f05134a9c2a9f7650dda16, type: 3}
   countdown_SE: {fileID: 8300000, guid: 3684393bc4db8d746b449fe4541211a9, type: 3}
   BGM: {fileID: 8300000, guid: ebb356c1b23f9fd46b8db022014c5b02, type: 3}
-  punchSEVolume: 0.2
-  wavingSEVolume: 0.2
-  bigpunchSEVolume: 0.2
+  punchSEVolume: 0.25
+  wavingSEVolume: 0.25
+  bigpunchSEVolume: 0.25
   surprisedSEVolume: 0.8
   countdownSEVolume: 0.5
 --- !u!4 &342718269

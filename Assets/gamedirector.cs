@@ -133,7 +133,7 @@ public class gamedirector : MonoBehaviour
         BGMaudiosource = gameObject.AddComponent<AudioSource>();
         BGMaudiosource.clip = BGM;
         BGMaudiosource.loop = true;
-        BGMaudiosource.volume = 0.05f;
+        BGMaudiosource.volume = 0.12f;
         BGMaudiosource.outputAudioMixerGroup = BGMAudioMixerGroup; // AudioMixerGroupÇê›íË
         BGMaudiosource.pitch = mode[0].speed_up;
         BGMaudiosource.Play();

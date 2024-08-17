@@ -3,7 +3,12 @@ guid: c5d2bb5c13e3ae0438b1548809b25cb0
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - audioMixer: {instanceID: 0}
+  - SEAudioMixerGroup: {instanceID: 0}
+  - display_SE: {instanceID: 0}
+  - display2_SE: {instanceID: 0}
+  - charge_SE: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
