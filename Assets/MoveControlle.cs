@@ -6,11 +6,6 @@ public class MoveController : MonoBehaviour
 {
     private float handmove = 0.1f;
 
-    private void Start()
-    {
-        
-    }
-    
     void Update()
     {
         Vector2 pos = transform.position;

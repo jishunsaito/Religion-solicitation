@@ -32,6 +32,7 @@ public class UIdirector : MonoBehaviour
         }
         else
         {
+            countText.text = "START";
             countText.gameObject.SetActive(false); // カウントダウンのUIを非表示
         }
 

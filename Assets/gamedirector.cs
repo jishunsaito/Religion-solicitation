@@ -243,7 +243,14 @@ public class gamedirector : MonoBehaviour
         SEaudiosource.volume = 1.0f;
         PlaySE(surprised_SE, surprisedSEVolume);
         yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadScene("ResultScene");
+        if (enemy[r].flag)
+        {
+            FadeManager.Instance.LoadScene("Cult_Result", 0.4f);
+        }
+        else
+        {
+            FadeManager.Instance.LoadScene("Police_Result", 0.4f);
+        }
 
     }
 
