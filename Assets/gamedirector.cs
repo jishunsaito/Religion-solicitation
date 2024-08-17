@@ -31,6 +31,7 @@ public class gamedirector : MonoBehaviour
     public static int n = 0;//倒した相手の数
     public Enemy[] enemy;//Enemy型の配列
     private GameObject enemyObject;//出現する人
+    private GameObject effect;
     private Vector2 start_pos;//人の開始地点
     private Vector2 target;//人の停止地点
     private float speed;//出現スピード 1.8
@@ -46,7 +47,6 @@ public class gamedirector : MonoBehaviour
     public AudioMixer audioMixer; // AudioMixerをドラッグ＆ドロップで設定します
     public AudioMixerGroup SEAudioMixerGroup; // SE用のAudioMixerGroup
     public AudioMixerGroup BGMAudioMixerGroup; // BGM用のAudioMixerGroup
-
     private AudioSource SEaudiosource;
     private AudioSource BGMaudiosource;
     private Animator punching;
@@ -111,6 +111,9 @@ public class gamedirector : MonoBehaviour
         target = new Vector2(0.0f, 1.5f);
         punching = GameObject.Find("punching1").GetComponent<Animator>();
         waving = GameObject.Find("hand1").GetComponent<Animator>();
+        effect = GameObject.Find("punch_effect");
+        effect.SetActive(false);
+        
 
         SEaudiosource = gameObject.AddComponent<AudioSource>();
         SEaudiosource.outputAudioMixerGroup = SEAudioMixerGroup; // AudioMixerGroupを設定
@@ -134,8 +137,9 @@ public class gamedirector : MonoBehaviour
         BGMaudiosource.outputAudioMixerGroup = BGMAudioMixerGroup; // AudioMixerGroupを設定
         BGMaudiosource.pitch = mode[0].speed_up;
         BGMaudiosource.Play();
+        yield return new WaitForSeconds(0.5f);
         Show_enemy();
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(0.9f);
         SEaudiosource.pitch = mode[0].speed_up * 1.6f;
     }
     IEnumerator GameStart()
@@ -165,11 +169,13 @@ public class gamedirector : MonoBehaviour
             PlaySE(bigpunch_SE, bigpunchSEVolume);
         }
         yield return new WaitForSeconds(0.25f/ mode[level_idx].speed_up);
+        effect.SetActive(true);
         StartCoroutine(Shake(0.1f,0.4f));
         yield return new WaitForSeconds(0.1f/ mode[level_idx].speed_up);
         Check(true);
-    
-        
+        effect.SetActive(false);
+
+
     }
 
     IEnumerator OnZkeypressed()
