@@ -21,19 +21,26 @@ public class UIdirector : MonoBehaviour
         countText = GameObject.Find("countdown").GetComponent<TextMeshProUGUI>();
         scoreText.gameObject.SetActive(false);
     }
+    IEnumerator Waited()
+    {
+        countText.text = "START";
+        yield return new WaitForSeconds(0.4f);
+        countText.gameObject.SetActive(false);
+        gamedirector.start_count = -1;
+
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (gamedirector.start_count != 0)
+        if (gamedirector.start_count > 0)
         {
             countText.text = gamedirector.start_count.ToString();
             countText.gameObject.SetActive(true); // カウントダウンのUIを表示
         }
-        else
+        else if(gamedirector.start_count == 0)
         {
-            countText.text = "START";
-            countText.gameObject.SetActive(false); // カウントダウンのUIを非表示
+            StartCoroutine(Waited());
         }
 
         if(gamedirector.n % 5 == 0 && gamedirector.n != 0 && !showtext && gamedirector.n != p_score)
