@@ -577,10 +577,10 @@ MonoBehaviour:
   surprised_SE: {fileID: 8300000, guid: 00de785978f05134a9c2a9f7650dda16, type: 3}
   countdown_SE: {fileID: 8300000, guid: 3684393bc4db8d746b449fe4541211a9, type: 3}
   BGM: {fileID: 8300000, guid: ebb356c1b23f9fd46b8db022014c5b02, type: 3}
-  punchSEVolume: 0.1
-  wavingSEVolume: 0.1
-  bigpunchSEVolume: 0.1
-  surprisedSEVolume: 1
+  punchSEVolume: 0.2
+  wavingSEVolume: 0.2
+  bigpunchSEVolume: 0.2
+  surprisedSEVolume: 0.8
   countdownSEVolume: 0.5
 --- !u!4 &342718269
 Transform:
@@ -878,8 +878,8 @@ Transform:
   m_GameObject: {fileID: 379197955}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.17, y: 0.85, z: 0}
-  m_LocalScale: {x: 6.099718, y: 4.57809, z: 1}
+  m_LocalPosition: {x: 0.17, y: 0.8996, z: 0}
+  m_LocalScale: {x: 6.099718, y: 4.598692, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
