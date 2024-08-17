@@ -17,9 +17,11 @@ public class police_resultdirector : MonoBehaviour
     public AudioMixerGroup SEAudioMixerGroup; // SE用のAudioMixerGroup
 
     private AudioSource SEaudiosource;
+    private AudioSource BGMaudiosource;
     public AudioClip display_SE;
     public AudioClip display2_SE;
     public AudioClip charge_SE;
+    public AudioClip BGM;
 
     // 音量設定用の変数
     [Range(0f, 1f)]
@@ -40,6 +42,8 @@ public class police_resultdirector : MonoBehaviour
         this.Backstart_button = GameObject.Find("Startbutton");
 
         SEaudiosource = gameObject.AddComponent<AudioSource>();
+        BGMaudiosource = gameObject.AddComponent<AudioSource>();
+        
         SEaudiosource.outputAudioMixerGroup = SEAudioMixerGroup; // AudioMixerGroupを設定
         SEaudiosource.volume = display_SEVolume; // デフォルト音量を設定
 
@@ -84,6 +88,11 @@ public class police_resultdirector : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         Restart_button.gameObject.SetActive(true);
         Backstart_button.gameObject.SetActive(true);
+        BGMaudiosource.clip = BGM;
+        BGMaudiosource.volume = 0.02f;
+        BGMaudiosource.loop = true;
+        BGMaudiosource.Play();
+
     }
 
     void PlaySE(AudioClip clip, float volume)
