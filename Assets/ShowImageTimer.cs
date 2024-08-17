@@ -14,7 +14,6 @@ public class ShowImageTimer : MonoBehaviour
         // レベルに基づいてタイマーを設定
         float currentLevelTime = gameDirector.mode[gameDirector.level_idx].ans_time;
         m_gameTimer.SetMaxTime(currentLevelTime);
-        m_gameTimer.OnStart(); // タイマーを開始
     }
 
     void Update()
