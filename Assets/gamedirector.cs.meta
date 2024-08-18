@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 1bf49b7a58217204391ba1394243088e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - audioMixer: {fileID: 24100000, guid: 659278f6302ea6649b86f76045784ad0, type: 2}
+  - SEAudioMixerGroup: {fileID: 1682185402651863749, guid: 659278f6302ea6649b86f76045784ad0, type: 2}
+  - BGMAudioMixerGroup: {fileID: -1805737955478753068, guid: 659278f6302ea6649b86f76045784ad0, type: 2}
+  - punch_SE: {fileID: 8300000, guid: 17aaa70b35dea1247895561fac1608fb, type: 3}
+  - bigpunch_SE: {fileID: 8300000, guid: 32cd15bde0cf9414c9712d04612d017a, type: 3}
+  - waving_SE: {fileID: 8300000, guid: a559cced4fb065440a61c23421c6b1f4, type: 3}
+  - surprised_SE: {fileID: 8300000, guid: 00de785978f05134a9c2a9f7650dda16, type: 3}
+  - BGM: {fileID: 8300000, guid: ebb356c1b23f9fd46b8db022014c5b02, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
