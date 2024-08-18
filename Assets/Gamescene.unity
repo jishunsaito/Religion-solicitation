@@ -581,7 +581,7 @@ MonoBehaviour:
   wavingSEVolume: 0.25
   bigpunchSEVolume: 0.25
   surprisedSEVolume: 0.8
-  countdownSEVolume: 0.5
+  countdownSEVolume: 0.4
 --- !u!4 &342718269
 Transform:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ public class police_resultdirector : MonoBehaviour
     // AudioMixerGroupを設定するためのフィールド
     public AudioMixer audioMixer; // AudioMixerをドラッグ＆ドロップで設定します
     public AudioMixerGroup SEAudioMixerGroup; // SE用のAudioMixerGroup
+    public AudioMixerGroup BGMAudioMixerGroup; //BGM用のAudioMixerGroup
 
     private AudioSource SEaudiosource;
     private AudioSource BGMaudiosource;
@@ -30,6 +31,8 @@ public class police_resultdirector : MonoBehaviour
     public float display2_SEVolume = 0.1f; // display2_SEの音量
     [Range(0f, 1f)]
     public float charge_SEVolume = 0.1f; // charge_SEの音量
+    [Range(0f, 1f)]
+    public float BGMVolume = 0.1f; // charge_SEの音量
 
     int n = gamedirector.n;
     // Start is called before the first frame update
@@ -89,7 +92,8 @@ public class police_resultdirector : MonoBehaviour
         Restart_button.gameObject.SetActive(true);
         Backstart_button.gameObject.SetActive(true);
         BGMaudiosource.clip = BGM;
-        BGMaudiosource.volume = 0.02f;
+        BGMaudiosource.volume = BGMVolume;
+        BGMaudiosource.outputAudioMixerGroup = BGMAudioMixerGroup; // AudioMixerGroupを設定
         BGMaudiosource.loop = true;
         BGMaudiosource.Play();
 

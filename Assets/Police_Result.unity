@@ -1030,6 +1030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 659278f6302ea6649b86f76045784ad0, type: 2}
   SEAudioMixerGroup: {fileID: 1682185402651863749, guid: 659278f6302ea6649b86f76045784ad0, type: 2}
+  BGMAudioMixerGroup: {fileID: 2631355785900391735, guid: 659278f6302ea6649b86f76045784ad0, type: 2}
   display_SE: {fileID: 8300000, guid: 77cce99b3029bdb47997f3bde9de27cc, type: 3}
   display2_SE: {fileID: 8300000, guid: 382cc407ee376dc42ac7f0b711108e5a, type: 3}
   charge_SE: {fileID: 8300000, guid: 30a05d00231bec7489cce80ef1ac7cc0, type: 3}
@@ -1037,6 +1038,7 @@ MonoBehaviour:
   display_SEVolume: 0.3
   display2_SEVolume: 0.3
   charge_SEVolume: 0.1
+  BGMVolume: 0.1
 --- !u!4 &1174395730
 Transform:
   m_ObjectHideFlags: 0
