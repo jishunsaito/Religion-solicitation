@@ -37,11 +37,12 @@ public class gamedirector : MonoBehaviour
     private float speed;//出現スピード 1.8
     private float back = -1.5f;//退場する速度
     private float grad = 0.85f;//スピードの勾配 0.85
+    private float timeBuffer = 0.1f;
     private float countdown;//制限時間
     private bool can_ans = false;//キーボードを押せるか
     private bool exit = false;//退場中
     private bool answering = false;//回答中
-    private bool timeup = false;//時間切れ
+    public static  bool timeup = false;//時間切れ
 
     // AudioMixerGroupを設定するためのフィールド
     public AudioMixer audioMixer; // AudioMixerをドラッグ＆ドロップで設定します
@@ -56,6 +57,7 @@ public class gamedirector : MonoBehaviour
     public AudioClip waving_SE;
     public AudioClip surprised_SE;
     public AudioClip countdown_SE;
+    public AudioClip TimeUP_SE;
     public AudioClip BGM;
     private ShowImageTimer showImageTimer;
 
@@ -76,10 +78,10 @@ public class gamedirector : MonoBehaviour
     //敵の出現
     void Show_enemy()
     {
-        if(n%15 == 0 && n <= 45 && n!= 0)
+        if (n % 15 == 0 && n <= 45 && n != 0)
         {
             level_idx++;
-            SEaudiosource.pitch = mode[level_idx].speed_up*1.6f;
+            SEaudiosource.pitch = mode[level_idx].speed_up * 1.6f;
             BGMaudiosource.pitch = mode[level_idx].speed_up;
             punching.speed = mode[level_idx].speed_up;
 
@@ -87,7 +89,7 @@ public class gamedirector : MonoBehaviour
 
         }
         r = Random.Range(mode[level_idx].r_range_min, mode[level_idx].r_range_max);//0または1
-        speed = 1.8f* mode[level_idx].speed_up;
+        speed = 1.8f * mode[level_idx].speed_up;
         enemyObject = new GameObject("Enemy");
         SpriteRenderer sr = enemyObject.AddComponent<SpriteRenderer>();
         sr.sprite = enemy[r].image;//配列enemyのr番目の要素の画像
@@ -107,13 +109,14 @@ public class gamedirector : MonoBehaviour
         Application.targetFrameRate = 60;
         n = 0;
         start_count = 3;
+        timeup = false;
         start_pos = new Vector2(10.0f, 1.5f);
         target = new Vector2(0.0f, 1.5f);
         punching = GameObject.Find("punching1").GetComponent<Animator>();
         waving = GameObject.Find("hand1").GetComponent<Animator>();
         effect = GameObject.Find("punch_effect");
         effect.SetActive(false);
-        
+
 
         SEaudiosource = gameObject.AddComponent<AudioSource>();
         SEaudiosource.outputAudioMixerGroup = SEAudioMixerGroup; // AudioMixerGroupを設定
@@ -123,7 +126,7 @@ public class gamedirector : MonoBehaviour
         showImageTimer.m_gameTimer.SetMaxTime(mode[level_idx].ans_time);
 
         StartCoroutine(StartSequence());
-        
+
 
 
     }
@@ -144,15 +147,13 @@ public class gamedirector : MonoBehaviour
     }
     IEnumerator GameStart()
     {
-        PlaySE(countdown_SE,countdownSEVolume);
-        for (int i = 0; i<3; i++)
+        PlaySE(countdown_SE, countdownSEVolume);
+        for (int i = 0; i < 3; i++)
         {
             start_count = 3 - i;
             yield return new WaitForSeconds(1.0f);
-            Debug.Log(start_count);
         }
         start_count = 0;
-        Debug.Log("Start");
     }
 
 
@@ -162,20 +163,26 @@ public class gamedirector : MonoBehaviour
         punching.SetTrigger("punchAnim");
         if (enemy[r].flag)
         {
-            PlaySE(punch_SE,punchSEVolume);
+            PlaySE(punch_SE, punchSEVolume);
         }
         else
         {
             PlaySE(bigpunch_SE, bigpunchSEVolume);
         }
-        yield return new WaitForSeconds(0.25f/ mode[level_idx].speed_up);
+
+        // タイマーの停止
+        showImageTimer.m_gameTimer.OnStop();
+
+        // 遅延処理
+        yield return new WaitForSeconds(0.25f / mode[level_idx].speed_up);
         effect.SetActive(true);
-        StartCoroutine(Shake(0.1f,0.4f));
-        yield return new WaitForSeconds(0.1f/ mode[level_idx].speed_up);
+        StartCoroutine(Shake(0.1f, 0.4f));
+        yield return new WaitForSeconds(0.1f / mode[level_idx].speed_up);
+
+        // 正解判定
         Check(true);
+
         effect.SetActive(false);
-
-
     }
 
     IEnumerator OnZkeypressed()
@@ -183,20 +190,25 @@ public class gamedirector : MonoBehaviour
         PlaySE(waving_SE, wavingSEVolume);
         waving.SetTrigger("handAnim");
         answering = true;
-        yield return new WaitForSeconds(0.2f / mode[level_idx].speed_up);
-        Check(false);
-        
 
+        // タイマーの停止
+        showImageTimer.m_gameTimer.OnStop();
+
+        // 遅延処理
+        yield return new WaitForSeconds(0.2f / mode[level_idx].speed_up);
+
+        // 正解判定
+        Check(false);
     }
-    IEnumerator Shake(float span,float degree)
+    IEnumerator Shake(float span, float degree)
     {
         Vector2 n_pos = enemyObject.transform.position;
         float delta = 0f;
-        while(delta < span)
+        while (delta < span)
         {
             float shake_x = Random.Range(-degree, degree);
             float shake_y = Random.Range(-degree, degree);
-            enemyObject.transform.position = new Vector2(n_pos.x+shake_x,n_pos.y+shake_y);
+            enemyObject.transform.position = new Vector2(n_pos.x + shake_x, n_pos.y + shake_y);
             delta += Time.deltaTime;
             yield return null;
         }
@@ -214,20 +226,22 @@ public class gamedirector : MonoBehaviour
 
     void Check(bool ans)
     {
-        if (ans == enemy[r].flag)
+        if (!timeup) // タイマーが切れていない場合のみ処理
         {
-            n++;
-            exit = true;
+            if (ans == enemy[r].flag)
+            {
+                n++;
+                exit = true;
+                timeup = false;
+            }
+            else
+            {
+                StartCoroutine(Loose());
+                timeup = true;
+              
+            }
+            can_ans = false;
         }
-        else
-        {
-            StartCoroutine(Loose());
-            timeup = true;
-        }
-        can_ans = false;
-        
-
-        
     }
     IEnumerator Loose()
     {
@@ -235,10 +249,12 @@ public class gamedirector : MonoBehaviour
         answering = true;
         BGMaudiosource.Stop();
         showImageTimer.m_gameTimer.OnStop();
+        yield return new WaitForSeconds(0.2f);
+        PlaySE(TimeUP_SE, 1.0f);
         yield return new WaitForSeconds(2.0f);
-        enemyObject.transform.localScale += Vector3.right*4;
+        enemyObject.transform.localScale += Vector3.right * 4;
         enemyObject.transform.localScale += Vector3.up * 4;
-        enemyObject.transform.Translate(0,-15,0);
+        enemyObject.transform.Translate(0, -15, 0);
         SEaudiosource.pitch = 1.0f;
         SEaudiosource.volume = 1.0f;
         PlaySE(surprised_SE, surprisedSEVolume);
@@ -256,37 +272,33 @@ public class gamedirector : MonoBehaviour
 
     void Update()
     {
-       
-
-        //Objectがあるときに移動
+        // Objectがあるときに移動
         if (enemyObject != null)
         {
-            
             speed *= grad;
             enemyObject.transform.position = Vector2.MoveTowards(
                 enemyObject.transform.position,
                 target,
                 speed
-            ) ;
+            );
         }
-        //退場の演出
+
+        // 退場の演出
         if (exit && !enemy[r].flag)
         {
-            enemyObject.transform.Translate(back* mode[level_idx].speed_up, 0, 0);
+            enemyObject.transform.Translate(back * mode[level_idx].speed_up, 0, 0);
             if (enemyObject.transform.position.x < -20.0f)
             {
                 answering = false;
                 Destroy(enemyObject);
                 Show_enemy();
             }
-
         }
-
-        else if(exit && enemy[r].flag)
+        else if (exit && enemy[r].flag)
         {
-            enemyObject.transform.Translate(back* mode[level_idx].speed_up, 0.7f, 0,Space.World);
+            enemyObject.transform.Translate(back * mode[level_idx].speed_up, 0.7f, 0, Space.World);
             enemyObject.transform.Rotate(0, 0, 30);
-            if(enemyObject.transform.position.x < -20.0f)
+            if (enemyObject.transform.position.x < -20.0f)
             {
                 answering = false;
                 Destroy(enemyObject);
@@ -294,32 +306,43 @@ public class gamedirector : MonoBehaviour
             }
         }
 
-
-        //キー操作
+        // キー操作
         if (enemyObject != null && enemyObject.transform.position.x < 1.0f && enemyObject.transform.position.x >= 0.0f)
         {
-            can_ans = true;//敵の停止を確認
+            can_ans = true; // 敵の停止を確認
             countdown -= Time.deltaTime;
+
+            if (countdown < timeBuffer && !timeup && !answering)
+            {
+                if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))
+                {
+                    // プレイヤーが行動を起こしたので、時間切れ処理をキャンセル
+                    countdown = timeBuffer; // 猶予時間を確保
+                }
+            }
+
             if (countdown < 0 && !timeup)
             {
                 showImageTimer.m_gameTimer.OnStop();
                 Debug.Log("時間切れ");
                 timeup = true;
+                can_ans = false;
                 StartCoroutine(Loose());
             }
-            
         }
-        if (can_ans && !answering)
+
+        if (can_ans && !answering && !timeup)
         {
             if (Input.GetKeyDown(KeyCode.Z))
-            { 
+            {
+                StopCoroutine(Loose());
                 StartCoroutine(OnZkeypressed());
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
+                StopCoroutine(Loose());
                 StartCoroutine(OnXkeypressed());
             }
-
         }
     }
 }
