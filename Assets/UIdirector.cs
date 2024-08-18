@@ -100,19 +100,19 @@ public class UIdirector : MonoBehaviour
             {
                 if (movingUp)
                 {
-                    RectScore.position += new Vector3(0, 4f, 0);
-                    Board.position += new Vector3(0, 4.0f, 0);
+                    RectScore.anchoredPosition += new Vector2(0, 4f);
+                    Board.anchoredPosition += new Vector2(0, 4f);
 
 
-                    if (RectScore.anchoredPosition.y >= 120f) // çÇÇ∑Ç¨ÇÈèÍçáÇÕï˚å¸ì]ä∑
+                    if (RectScore.anchoredPosition.y >= 150f) // çÇÇ∑Ç¨ÇÈèÍçáÇÕï˚å¸ì]ä∑
                     {
                         movingUp = false;
                     }
                 }
                 else
                 {
-                    RectScore.position -= new Vector3(0, 4.0f, 0);
-                    Board.position -= new Vector3(0, 4.0f, 0);
+                    RectScore.anchoredPosition -= new Vector2(0, 4f);
+                    Board.anchoredPosition -= new Vector2(0, 4f);
 
                     if (RectScore.anchoredPosition.y <= -80f) // í·Ç∑Ç¨ÇÈèÍçáÇÕàÍéûí‚é~
                     {
@@ -126,6 +126,7 @@ public class UIdirector : MonoBehaviour
             {
                 showtext = false;
                 scoreText.gameObject.SetActive(false);
+                TimeupText.gameObject.SetActive(false);
             }
         }
     }

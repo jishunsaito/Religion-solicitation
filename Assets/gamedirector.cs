@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using unityroom.Api;
 
 
 
@@ -245,6 +246,7 @@ public class gamedirector : MonoBehaviour
     }
     IEnumerator Loose()
     {
+        UnityroomApiClient.Instance.SendScore(1, n, ScoreboardWriteMode.HighScoreDesc);
         //不正解の時の敵の行動0.5秒後にプレイヤーに近づく
         answering = true;
         BGMaudiosource.Stop();
