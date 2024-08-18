@@ -38,7 +38,7 @@ public class gamedirector : MonoBehaviour
     private float speed;//出現スピード 1.8
     private float back = -1.5f;//退場する速度
     private float grad = 0.85f;//スピードの勾配 0.85
-    private float timeBuffer = 0.1f;
+    private float timeBuffer = 0.2f;
     private float countdown;//制限時間
     private bool can_ans = false;//キーボードを押せるか
     private bool exit = false;//退場中
@@ -314,22 +314,26 @@ public class gamedirector : MonoBehaviour
             can_ans = true; // 敵の停止を確認
             countdown -= Time.deltaTime;
 
+            // ボタンを押した時に時間切れ判定を保留
             if (countdown < timeBuffer && !timeup && !answering)
             {
                 if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))
                 {
-                    // プレイヤーが行動を起こしたので、時間切れ処理をキャンセル
                     countdown = timeBuffer; // 猶予時間を確保
                 }
             }
 
+            // 時間切れ判定
             if (countdown < 0 && !timeup)
             {
-                showImageTimer.m_gameTimer.OnStop();
-                Debug.Log("時間切れ");
-                timeup = true;
-                can_ans = false;
-                StartCoroutine(Loose());
+                if (!answering) // 入力がない場合のみ時間切れ処理
+                {
+                    showImageTimer.m_gameTimer.OnStop();
+                    Debug.Log("時間切れ");
+                    timeup = true;
+                    can_ans = false;
+                    StartCoroutine(Loose());
+                }
             }
         }
 
